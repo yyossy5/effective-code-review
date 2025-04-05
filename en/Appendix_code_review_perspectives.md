@@ -1,1 +1,56 @@
-wip
+# Code Review Checklist
+
+## ① Functionality (Logic & Design Validity)
+
+| Aspect                   | Examples                                                                                                    | Notes                                                                                                                                                                                                                    |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Specification Conformity | - Are the requirements clearly defined?<br>- Does the code meet the given specification?                    |                                                                                                                                                                                                                          |
+| Error Handling           | - Are failure cases from external APIs properly handled?<br>- Are appropriate fallback actions implemented? |                                                                                                                                                                                                                          |
+| Edge Case Handling       | - Are special cases like empty inputs or maximum values considered?                                         |                                                                                                                                                                                                                          |
+| Idempotency & Atomicity  | - Can the process be safely retried if it’s interrupted midway?                                             | Idempotency simplifies error recovery.<br> - e.g., Overwrite a table instead of updating (use `CREATE OR REPLACE`)<br> - e.g., Remove an existing S3 object before uploading (avoids leaving partial outputs on failure) |
+| Impact on Other Features | - Could this change unintentionally affect other features?                                                  |                                                                                                                                                                                                                          |
+| Type Safety              | - Are type mismatches avoided (especially in dynamically typed languages)?                                  | e.g., Comparing an `int` with a `string` in Python can cause false negatives even if the values seem equal.                                                                                                              |
+| Date/Time Handling       | - Are time zones handled correctly and explicitly specified?                                                | Using the default UTC timezone without awareness may cause bugs, such as retrieving "yesterday's date" when running a job before 9 AM JST.                                                                               |
+
+## ② Testing (Quality Assurance)
+
+| Aspect                      | Examples                                                                                                | Notes                                                                                              |
+| --------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Validity of Test Cases      | - Are the specifications properly translated into test cases?                                           | Especially important for critical features where bugs could lead to major issues                   |
+| Test Code Clarity           | - Is the test code easy to read and free of unnecessary complexity?                                     |                                                                                                    |
+| Test Design Appropriateness | - Are private methods tested directly?                                                                  | Direct testing of private methods is fragile and should be avoided                                 |
+| Mocking Appropriateness     | - Is mocking limited to external services or time-related logic?<br>- Is the mocking scope appropriate? | Too much mocking can lead to unrepresentative tests. Aim to execute as much real code as possible. |
+| Edge Case Coverage          | - Are edge cases (e.g., zero records, max values) properly tested?                                      |                                                                                                    |
+
+## ③ Non-Functional Requirements (Performance & Infrastructure)
+
+| Aspect                      | Examples                                                                                             | Notes                                                                        |
+| --------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Performance                 | - Is memory and computational efficiency acceptable?<br>- Are SQL queries optimized for performance? | e.g., Consider use of indexes, partitioning, clustering, etc.                |
+| Infrastructure Requirements | - Are all necessary runtime conditions and environments in place?                                    | e.g., Required packages installed? Network access to new services available? |
+| Cloud Quota Constraints     | - Are API rate limits and usage quotas properly accounted for?                                       |                                                                              |
+
+## ④ Maintainability & Operability (Readability, Operations, Team Collaboration)
+
+| Aspect                                | Examples                                                                                                    | Notes                                                                                                        |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Review Friendliness                   | - Are specifications and the purpose of changes clearly explained?<br>- Are sample inputs/outputs included? |                                                                                                              |
+| Code Complexity & Simplicity          | - Is the implementation as simple as reasonably possible?<br>- Could it be simplified further?              |                                                                                                              |
+| Class Design & Separation of Concerns | - Are responsibilities clearly separated?<br>- Is encapsulation properly used?                              | - Encapsulation: Group related data and behavior<br>- Separation of concerns: Avoid mixing unrelated logic   |
+| Logging Appropriateness               | - Are logs useful for identifying root causes?<br>- Are they structured and easy to read?                   | Verbose or unstructured logs can hinder debugging                                                            |
+| Code Readability                      | - Is nesting kept minimal?<br>- Is cyclomatic complexity under control?                                     |                                                                                                              |
+| Coding Style Consistency              | - Is the coding style consistent with the rest of the codebase?                                             |                                                                                                              |
+| Linting & Formatting                  | - Are linting and code formatting tools applied consistently?                                               |                                                                                                              |
+| Naming Clarity                        | - Are names for variables, functions, and classes intuitive and meaningful?                                 |                                                                                                              |
+| Comments & Documentation              | - Is the reasoning behind decisions (why or why not) documented?<br>- Are docs up to date?                  | This includes not only inline docs (e.g., Javadoc, docstrings), but also README, CHANGELOG, Confluence, etc. |
+| Typos and Errors                      | - Are there any spelling, grammar, or typographical errors?                                                 |                                                                                                              |
+| Commit Message Appropriateness        | - Are commits logically grouped and clearly explained?                                                      |                                                                                                              |
+| Dependency Management                 | - Are submodules or external libraries properly updated and versioned?                                      |                                                                                                              |
+
+## ⑤ Release & Operational Considerations
+
+| Aspect                          | Examples                                                                                    | Notes                                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Operational Readiness on Errors | - Are operational procedures in place for handling errors and failures?                     |                                                                                                                |
+| Release Management Integrity    | - Are any unintended changes included in the release branch?                                | e.g., Prevent unintentional releases by avoiding merging unreleased features into `develop` (if using GitFlow) |
+| File Size Impact                | - If the change significantly affects file size, has the impact been measured and assessed? |                                                                                                                |
