@@ -14,22 +14,26 @@ A comprehensive guide to effective code review practices, from coding to PR crea
 This guide covers the complete code review workflow:
 
 1. **Introduction**
+
    - Purpose and scope of this guide
    - Information sources and background
 
 2. **Benefits of Code Review**
+
    - Code quality assurance
    - Knowledge sharing
    - Team collaboration improvement
    - Psychological benefits
 
 3. **Coding Phase Tips**
+
    - Writing reviewer-friendly code
    - Proper code abstraction
    - Commit message best practices
    - Version control techniques
 
 4. **Pull Request Preparation Tips**
+
    - Creating focused, reviewable PRs
    - Writing effective PR descriptions
    - Self-review practices
@@ -44,9 +48,14 @@ This guide covers the complete code review workflow:
 ### Appendices
 
 - **Commit Related Techniques**
+
   - Detailed Git operations
   - Commit management tips
   - Rebase workflows
+
+- **Code Review Checklist**
+
+  - Checklist categorized by perspective
 
 ## Available Languages
 
