@@ -11,6 +11,7 @@
 | Impact on Other Features | - Could this change unintentionally affect other features?                                                  |                                                                                                                                                                                                                          |
 | Type Safety              | - Are type mismatches avoided (especially in dynamically typed languages)?                                  | e.g., Comparing an `int` with a `string` in Python can cause false negatives even if the values seem equal.                                                                                                              |
 | Date/Time Handling       | - Are time zones handled correctly and explicitly specified?                                                | Using the default UTC timezone without awareness may cause bugs, such as retrieving "yesterday's date" when running a job before 9 AM JST.                                                                               |
+| Security                 | - Is input validation properly implemented (e.g., preventing SQL injection, XSS)?                           |                                                                                                                                                                                                                          |
 
 ## ② Testing (Quality Assurance)
 
@@ -27,6 +28,7 @@
 | Aspect                      | Examples                                                                                             | Notes                                                                        |
 | --------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Performance                 | - Is memory and computational efficiency acceptable?<br>- Are SQL queries optimized for performance? | e.g., Consider use of indexes, partitioning, clustering, etc.                |
+| Scalability                 | - Is the design capable of handling increased user traffic or data volume?                           |                                                                              |
 | Infrastructure Requirements | - Are all necessary runtime conditions and environments in place?                                    | e.g., Required packages installed? Network access to new services available? |
 | Cloud Quota Constraints     | - Are API rate limits and usage quotas properly accounted for?                                       |                                                                              |
 
@@ -49,8 +51,9 @@
 
 ## ⑤ Release & Operational Considerations
 
-| Aspect                          | Examples                                                                                    | Notes                                                                                                          |
-| ------------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Operational Readiness on Errors | - Are operational procedures in place for handling errors and failures?                     |                                                                                                                |
-| Release Management Integrity    | - Are any unintended changes included in the release branch?                                | e.g., Prevent unintentional releases by avoiding merging unreleased features into `develop` (if using GitFlow) |
-| File Size Impact                | - If the change significantly affects file size, has the impact been measured and assessed? |                                                                                                                |
+| Aspect                           | Examples                                                                                             | Notes                                                                                                          |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Rollback and Recovery Procedures | - Are procedures for rollback and recovery clearly defined in case issues arise?                     |                                                                                                                |
+| Monitoring and Alerting          | - Are monitoring approaches and alerting criteria clearly defined for new features or modifications? |                                                                                                                |
+| Release Management Integrity     | - Are any unintended changes included in the release branch?                                         | e.g., Prevent unintentional releases by avoiding merging unreleased features into `develop` (if using GitFlow) |
+| File Size Impact                 | - If the change significantly affects file size, has the impact been measured and assessed?          |                                                                                                                |
